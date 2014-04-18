@@ -37,7 +37,7 @@ end;
 
 procedure TFormMove.BtnMoveAllClick(Sender: TObject);
 begin
-  GMoveAll := True;
+  GMoveAll := true;
   Self.Close;
 end;
 

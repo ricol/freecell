@@ -1,7 +1,7 @@
 unit UnitMain;
 
 {
-CONTACT: WANGXINGHE1983@GMAIL.COM
+  CONTACT: WANGXINGHE1983@GMAIL.COM
 }
 
 interface
@@ -17,7 +17,7 @@ type
     x, y: integer;
   end;
 
-  TArray = array[1..100] of TPoke;
+  TArray = array [1 .. 100] of TPoke;
 
   TPosType = (TYPEARRAY, TYPETEMP, TYPECONTAINER);
 
@@ -49,18 +49,19 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure PaintBoxMainPaint(Sender: TObject);
     procedure PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+      Shift: TShiftState; x, y: integer);
+    procedure PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState;
+      x, y: integer);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     procedure UpDateKing(tmp: TDIRECTION);
-    function GetPokeNumber(var tmpNumber: integer; var tmpArray: array of string; var tmpIndex: integer): TPoke;
+    function GetPokeNumber(var tmpNumber: integer;
+      var tmpArray: array of string; var tmpIndex: integer): TPoke;
     procedure DrawPoke(tmpX, tmpY: integer; tmpPoke: TPoke);
-    function NotInArraY(tmpX, tmpY: integer; var tmpArray: array of string; var tmpIndex: integer): boolean;
-    procedure SetUnChoosed(tmp: Integer);
-    procedure SetChoosed(tmp: Integer);
+    function NotInArraY(tmpX, tmpY: integer; var tmpArray: array of string;
+      var tmpIndex: integer): boolean;
+    procedure SetUnChoosed(tmp: integer);
+    procedure SetChoosed(tmp: integer);
     procedure MovePokeFromArrayToTemp(tmpCol, tmpNum: integer);
     procedure MovePokeFromArrayToArray(tmpColFrom, tmpColTo: integer);
     procedure MovePokeFromTempToArray(tmpNum, tmpCol: integer);
@@ -69,7 +70,8 @@ type
     procedure MovePokeFromArrayToContainer(tmpCol, tmpContainer: integer);
     procedure AutoMovePokeFromArrayToContainer(tmpCol: integer);
     function PokeCanMove(tmpPokeDown, tmpPokeUp: TPoke): boolean;
-    function IndicatePokeCanMove(tmpNumFrom, tmpNumTo: integer; tmpTypeFrom, tmpTypeTo: TPosType): boolean;
+    function IndicatePokeCanMove(tmpNumFrom, tmpNumTo: integer;
+      tmpTypeFrom, tmpTypeTo: TPosType): boolean;
     function CanPutToContainer(tmpPoke: TPoke; tmpContainer: integer): boolean;
     function CanDelete(tmpPoke: TPoke): boolean;
     function HavePoke(tmpPoke: TPoke): boolean;
@@ -78,11 +80,12 @@ type
     function GetBlankSpace(): integer;
     function GetBlankSpace_New(tmpCol: integer): integer;
     function Another(tmpPoke: TPoke): boolean;
-    function GetTargetPokeNumber(X, Y: integer; var tmpPosType: TPosType): integer;
+    function GetTargetPokeNumber(x, y: integer;
+      var tmpPosType: TPosType): integer;
     function GetCanMovePokeNumber_New(tmpCol: integer): integer;
     procedure CheckAllPokeCanDelete();
     procedure DrawTempArea();
-    procedure DrawTempAreaNumber(tmpNum: Integer);
+    procedure DrawTempAreaNumber(tmpNum: integer);
     procedure DrawContainerArea();
     procedure DrawArrayArea();
     procedure DrawArrayNumber(tmpCol: integer);
@@ -122,13 +125,22 @@ const
 var
   GRect: TRect;
   GKingDirection: TDIRECTION = TORIGHT;
-  GArray: array[1..8] of TArray;
+  GArray: array [1 .. 8] of TArray;
   GTempArray: TArray;
   GTempArrayIndex: integer;
-  GArrayIndex: array[1..8] of integer = (0, 0, 0, 0, 0, 0, 0, 0);
-  GTemp: array[1..4] of TPoke;
-  GContainer: array[1..4] of TPoke;
-  GStringArray: array[1..53] of string;
+  GArrayIndex: array [1 .. 8] of integer = (
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  );
+  GTemp: array [1 .. 4] of TPoke;
+  GContainer: array [1 .. 4] of TPoke;
+  GStringArray: array [1 .. 53] of string;
   GStringIndex: integer;
   GRunning, GHaveClicked: boolean;
   GChoosed, GTotalPoke, GFlag: integer;
@@ -152,7 +164,7 @@ begin
   GRect.Bottom := 20 + 34;
   GKingDirection := TORIGHT;
   GRunning := False;
-  GHaveClicked := false;
+  GHaveClicked := False;
   GChoosed := 0;
   GFlag := 0;
   GChoosedType := TYPETEMP;
@@ -200,7 +212,7 @@ procedure TFormMain.MenuGameStartClick(Sender: TObject);
 var
   i, total, tmpNum: integer;
 begin
-  GRunning := false;
+  GRunning := False;
   GChoosed := 0;
   GTotalPoke := 52;
   DrawTempArea();
@@ -226,31 +238,32 @@ begin
   begin
     tmpNum := total mod 8 + 1;
     inc(GArrayIndex[tmpNum]);
-//    sleep(5);
-    GArray[tmpNum][GArrayIndex[tmpNum]] := GetPokeNumber(total, GStringArray, GStringIndex);
+    // sleep(5);
+    GArray[tmpNum][GArrayIndex[tmpNum]] := GetPokeNumber(total, GStringArray,
+      GStringIndex);
     DrawPoke((tmpNum - 1) * ARRAY_MULX + ARRAY_STARTX,
-             GArrayIndex[tmpNum] * ARRAY_MULY + ARRAY_STARTY,
-             GArray[tmpNum][GArrayIndex[tmpNum]]);
+      GArrayIndex[tmpNum] * ARRAY_MULY + ARRAY_STARTY,
+      GArray[tmpNum][GArrayIndex[tmpNum]]);
   end;
 end;
 
 procedure TFormMain.MenuGameStopClick(Sender: TObject);
 begin
-  GRunning := false;
+  GRunning := False;
   PaintBoxMain.OnPaint(Sender);
 end;
 
 procedure TFormMain.MenuHelpAboutClick(Sender: TObject);
 begin
-  MessageBox(Self.Handle, PChar('游戏名称：空当接龙' + sLineBreak +
-                                '开发者：RICOL' + sLineBreak +
-                                '联系：WANGXINGHE1983@GMAIL.COM'), '关于', MB_OK);
+  MessageBox(Self.Handle, PChar('游戏名称：空当接龙' + sLineBreak + '开发者：RICOL' +
+    sLineBreak + '联系：WANGXINGHE1983@GMAIL.COM'), '关于', MB_OK);
 end;
 
 procedure TFormMain.MovePokeFromArrayToArray(tmpColFrom, tmpColTo: integer);
 begin
   inc(GArrayIndex[tmpColTo]);
-  GArray[tmpColTo][GArrayIndex[tmpColTo]] := GArray[tmpColFrom][GArrayIndex[tmpColFrom]];
+  GArray[tmpColTo][GArrayIndex[tmpColTo]] := GArray[tmpColFrom]
+    [GArrayIndex[tmpColFrom]];
   GArray[tmpColFrom][GArrayIndex[tmpColFrom]].x := 0;
   GArray[tmpColFrom][GArrayIndex[tmpColFrom]].y := 0;
   dec(GArrayIndex[tmpColFrom]);
@@ -280,7 +293,7 @@ begin
   GTemp[tmpNum].y := GArray[tmpCol][GArrayIndex[tmpCol]].y;
   GArray[tmpCol][GArrayIndex[tmpCol]].x := 0;
   GArray[tmpCol][GArrayIndex[tmpCol]].y := 0;
-  Dec(GArrayIndex[tmpCol]);
+  dec(GArrayIndex[tmpCol]);
   DrawArrayNumber(tmpCol);
   DrawTempAreaNumber(tmpNum);
   CheckAllPokeCanDelete();
@@ -329,7 +342,7 @@ begin
   begin
     if format('%d_%d', [tmpX, tmpY]) = tmpArray[i] then
     begin
-      result := false;
+      result := False;
       exit;
     end;
   end;
@@ -337,27 +350,29 @@ begin
   inc(tmpIndex);
 end;
 
-procedure TFormMain.PaintBoxMainMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TFormMain.PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; x, y: integer);
 var
   i, tmpNum, tmpCol, tmpContainer, tmpPokeNumber, tmpSpace: integer;
   tmpPokeOne, tmpPokeTwo: TPoke;
 begin
-  if not GRunning then exit;
+  if not GRunning then
+    exit;
   tmpNum := 0;
   tmpCol := 0;
   tmpContainer := 0;
   PaintBoxMain.Cursor := crDefault;
   Application.ProcessMessages;
-  if (Y >= ARRAY_MULY + ARRAY_STARTY) then        //点击的是Array区域
+  if (y >= ARRAY_MULY + ARRAY_STARTY) then // 点击的是Array区域
   begin
     for i := 1 to 8 do
-      if X >= (8 - i) * ARRAY_MULX + ARRAY_STARTX then
+      if x >= (8 - i) * ARRAY_MULX + ARRAY_STARTX then
       begin
         tmpCol := 9 - i;
         break;
       end;
-    if tmpCol = 0 then exit;
+    if tmpCol = 0 then
+      exit;
     if GChoosed = 0 then
     begin
       if GArrayIndex[tmpCol] > 0 then
@@ -366,20 +381,23 @@ begin
         GChoosedType := TYPEARRAY;
         SetChoosed(tmpCol);
         exit;
-      end else
+      end
+      else
         exit;
-    end else
+    end
+    else
     begin
-      if GChoosedType = TYPEARRAY then             //之前点击的是Array区域
+      if GChoosedType = TYPEARRAY then // 之前点击的是Array区域
       begin
-        if GChoosed = tmpCol then                  //两次点击的是相同的Array区域
+        if GChoosed = tmpCol then // 两次点击的是相同的Array区域
         begin
-          SetUnchoosed(tmpCol);
+          SetUnChoosed(tmpCol);
           GChoosed := 0;
           exit;
-        end else
-        begin                             //两次点击的是不同的Array区域
-          if GArrayIndex[tmpCol] <= 0 then         //这次点击的Array没有Poke
+        end
+        else
+        begin // 两次点击的是不同的Array区域
+          if GArrayIndex[tmpCol] <= 0 then // 这次点击的Array没有Poke
           begin
             tmpPokeNumber := GetCanMovePokeNumber_New(GChoosed);
             if tmpPokeNumber = 1 then
@@ -388,12 +406,14 @@ begin
               GChoosed := 0;
               exit;
             end;
-            FormMove.Left := Self.Left + (Self.Width div 2) - FormMove.Width div 2;
-            FormMove.Top := Self.Top + (Self.Height div 2) - FormMove.Height div 2;
+            FormMove.Left := Self.Left + (Self.Width div 2) -
+              FormMove.Width div 2;
+            FormMove.Top := Self.Top + (Self.Height div 2) -
+              FormMove.Height div 2;
             FormMove.ShowModal;
             if GCancel then
             begin
-              SetUnchoosed(GChoosed);
+              SetUnChoosed(GChoosed);
               GChoosed := 0;
               exit;
             end;
@@ -403,9 +423,11 @@ begin
               if tmpPokeNumber > tmpSpace then
                 tmpPokeNumber := tmpSpace;
               GTempArrayIndex := 0;
-              for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] - tmpPokeNumber + 1 do
+              for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] -
+                tmpPokeNumber + 1 do
               begin
-                if i <= 0 then break;
+                if i <= 0 then
+                  break;
                 inc(GTempArrayIndex);
                 GTempArray[GTempArrayIndex] := GArray[GChoosed][i];
                 GArray[GChoosed][i].x := 0;
@@ -422,30 +444,35 @@ begin
               CheckAllPokeCanDelete();
               GChoosed := 0;
               exit;
-            end else
+            end
+            else
             begin
               MovePokeFromArrayToArray(GChoosed, tmpCol);
             end;
             GChoosed := 0;
             exit;
           end;
-          //这次点击的Array有Poke
-          //首先判断可以移动的Poke数目 从GChoosed -> tmpCol
+          // 这次点击的Array有Poke
+          // 首先判断可以移动的Poke数目 从GChoosed -> tmpCol
           tmpPokeNumber := GetCanMovePokeNumber(GChoosed, tmpCol);
           tmpSpace := GetBlankSpace();
           if tmpSpace < tmpPokeNumber then
           begin
-            MessageBox(Self.Handle, PChar(Format('要求移动 %d 张牌。但所剩空间只能够移动 %d 张牌。', [tmpPokeNumber, tmpSpace])), '信息', MB_OK or MB_ICONINFORMATION);
+            MessageBox(Self.Handle, PChar(format('要求移动 %d 张牌。但所剩空间只能够移动 %d 张牌。',
+              [tmpPokeNumber, tmpSpace])), '信息', MB_OK or MB_ICONINFORMATION);
             SetUnChoosed(GChoosed);
             GChoosed := 0;
             exit;
-          end else
+          end
+          else
           begin
-          //开始移动整堆的扑克
+            // 开始移动整堆的扑克
             GTempArrayIndex := 0;
-            for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] - tmpPokeNumber + 1 do
+            for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] -
+              tmpPokeNumber + 1 do
             begin
-              if i <= 0 then break;
+              if i <= 0 then
+                break;
               inc(GTempArrayIndex);
               GTempArray[GTempArrayIndex] := GArray[GChoosed][i];
               GArray[GChoosed][i].x := 0;
@@ -464,11 +491,12 @@ begin
             exit;
           end;
         end;
-      end else if GChoosedType = TYPETEMP then       //之前点击的是Temp区域
+      end
+      else if GChoosedType = TYPETEMP then // 之前点击的是Temp区域
       begin
-        if GTemp[GChoosed].x <> 0 then               //之前点击的Temp区域不为空
+        if GTemp[GChoosed].x <> 0 then // 之前点击的Temp区域不为空
         begin
-          if GArrayIndex[tmpCol] <= 0 then         //这次点击的Array没有Poke
+          if GArrayIndex[tmpCol] <= 0 then // 这次点击的Array没有Poke
           begin
             MovePokeFromTempToArray(GChoosed, tmpCol);
             GChoosed := 0;
@@ -481,153 +509,177 @@ begin
             MovePokeFromTempToArray(GChoosed, tmpCol);
             GChoosed := 0;
             exit;
-          end else
+          end
+          else
           begin
             Beep();
             SetUnChoosed(GChoosed);
             GChoosed := 0;
             exit;
           end;
-        end else
-        begin                               //之前点击的Temp区域为空则出现异常错误
+        end
+        else
+        begin // 之前点击的Temp区域为空则出现异常错误
           ShowMessage(IntToStr(GChoosed));
-          MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
+          MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息',
+            MB_OK or MB_ICONERROR);
           Application.Terminate;
         end;
-      end else if GChoosedType = TYPECONTAINER then
+      end
+      else if GChoosedType = TYPECONTAINER then
       begin
         MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
         Application.Terminate;
-      end else
+      end
+      else
       begin
         MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
         Application.Terminate;
       end;
     end;
-  end else if (Y <= POKE_HEIGHT) and (X <= 4 * TEMP_MULX) then     //点击的是Temp区域
+  end
+  else if (y <= POKE_HEIGHT) and (x <= 4 * TEMP_MULX) then // 点击的是Temp区域
   begin
     for i := 1 to 4 do
-      if X >= (4 - i) * POKE_WIDTH then
+      if x >= (4 - i) * POKE_WIDTH then
       begin
         tmpNum := 5 - i;
         break;
       end;
-      if tmpNum = 0 then exit;
-      if GChoosed = 0 then
+    if tmpNum = 0 then
+      exit;
+    if GChoosed = 0 then
+    begin
+      if GTemp[tmpNum].x <> 0 then
       begin
-        if GTemp[tmpNum].x <> 0 then
+        GChoosed := tmpNum;
+        GChoosedType := TYPETEMP;
+        SetChoosed(tmpNum);
+        exit;
+      end
+      else
+        exit;
+    end
+    else if GChoosedType = TYPETEMP then // 之前点击的也是Temp区域
+    begin
+      if GChoosed <> tmpNum then // 是不同的Temp区域
+      begin
+        if GTemp[tmpNum].x = 0 then
         begin
-          GChoosed := tmpNum;
-          GChoosedType := TYPETEMP;
+          MovePokeFromTempToTemp(GChoosed, tmpNum);
+          GChoosed := 0;
+          exit;
+        end
+        else
+        begin
+          SetUnChoosed(GChoosed);
           SetChoosed(tmpNum);
-          exit;
-        end else exit;
-      end else if GChoosedType = TYPETEMP then           //之前点击的也是Temp区域
-      begin
-        if GChoosed <> tmpNum then                   //是不同的Temp区域
-        begin
-          if GTemp[tmpNum].x = 0 then
-          begin
-            MovePokeFromTempToTemp(GChoosed, tmpNum);
-            GChoosed := 0;
-            exit;
-          end else
-          begin
-            SetUnChoosed(GChoosed);
-            SetChoosed(tmpNum);
-            GChoosed := tmpNum;
-            exit;
-          end;
-        end else
-        begin                               //是相同的Temp区域
-          SetUnChoosed(GChoosed);
-          GChoosed := 0;
+          GChoosed := tmpNum;
           exit;
         end;
-      end else if GChoosedType = TYPEARRAY then        //之前点击的是Array区域
-      begin
-        if GTemp[tmpNum].x = 0 then                    //现在点击的Temp区域是空的
-        begin
-          MovePokeFromArrayToTemp(GChoosed, tmpNum);
-          GChoosed := 0;
-          exit;
-        end else
-        begin                                 //现在点击的Temp区域不是空的
-          SetUnChoosed(GChoosed);
-          GChoosed := 0;
-          exit;
-        end;
-      end else if GChoosedType = TYPECONTAINER then
-      begin
-        MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
-        Application.Terminate;
-      end else
-      begin
-        MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
-        Application.Terminate;
+      end
+      else
+      begin // 是相同的Temp区域
+        SetUnChoosed(GChoosed);
+        GChoosed := 0;
+        exit;
       end;
-  end else if (Y <= POKE_HEIGHT) and (X >= Self.ClientWidth - 4 * TEMP_MULX) then   //点击的是Container区域
+    end
+    else if GChoosedType = TYPEARRAY then // 之前点击的是Array区域
+    begin
+      if GTemp[tmpNum].x = 0 then // 现在点击的Temp区域是空的
+      begin
+        MovePokeFromArrayToTemp(GChoosed, tmpNum);
+        GChoosed := 0;
+        exit;
+      end
+      else
+      begin // 现在点击的Temp区域不是空的
+        SetUnChoosed(GChoosed);
+        GChoosed := 0;
+        exit;
+      end;
+    end
+    else if GChoosedType = TYPECONTAINER then
+    begin
+      MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
+      Application.Terminate;
+    end
+    else
+    begin
+      MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
+      Application.Terminate;
+    end;
+  end
+  else if (y <= POKE_HEIGHT) and (x >= Self.ClientWidth - 4 * TEMP_MULX) then
+  // 点击的是Container区域
   begin
     for i := 4 downto 1 do
-      if X >= Self.ClientWidth - (5 - i) * TEMP_MULX then
+      if x >= Self.ClientWidth - (5 - i) * TEMP_MULX then
       begin
         tmpContainer := i;
         break;
       end;
-      if tmpContainer = 0 then exit;
-      if GChoosed = 0 then exit;
-      if GChoosedType = TYPETEMP then                              //之前点击的是Temp区域
+    if tmpContainer = 0 then
+      exit;
+    if GChoosed = 0 then
+      exit;
+    if GChoosedType = TYPETEMP then // 之前点击的是Temp区域
+    begin
+      tmpPokeOne := GTemp[GChoosed];
+      if CanPutToContainer(tmpPokeOne, tmpContainer) then
       begin
-        tmpPokeOne := GTemp[GChoosed];
-        if CanPutToContainer(tmpPokeOne, tmpContainer) then
-        begin
-          PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
-//          Sleep(100);
-          MovePokeFromTempToContainer(GChoosed, tmpContainer);
-          GChoosed := 0;
-          exit;
-        end else
-        begin
-          Beep();
-          SetUnchoosed(GChoosed);
-          GChoosed := 0;
-          exit;
-        end;
-      end else if GChoosedType = TYPEARRAY then                   //之前点击的是Array区域
+        PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
+        // Sleep(100);
+        MovePokeFromTempToContainer(GChoosed, tmpContainer);
+        GChoosed := 0;
+        exit;
+      end
+      else
       begin
-        tmpPokeOne := GArray[GChoosed][GArrayIndex[GChoosed]];
-        if CanPutToContainer(tmpPokeOne, tmpContainer) then
-        begin
-          PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
-//          Sleep(100);
-          MovePokeFromArrayToContainer(GChoosed, tmpContainer);
-          GChoosed := 0;
-          exit;
-        end else
-        begin
-          Beep();
-          SetUnChoosed(GChoosed);
-          GChoosed := 0;
-          exit;
-        end;
+        Beep();
+        SetUnChoosed(GChoosed);
+        GChoosed := 0;
+        exit;
       end;
+    end
+    else if GChoosedType = TYPEARRAY then // 之前点击的是Array区域
+    begin
+      tmpPokeOne := GArray[GChoosed][GArrayIndex[GChoosed]];
+      if CanPutToContainer(tmpPokeOne, tmpContainer) then
+      begin
+        PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
+        // Sleep(100);
+        MovePokeFromArrayToContainer(GChoosed, tmpContainer);
+        GChoosed := 0;
+        exit;
+      end
+      else
+      begin
+        Beep();
+        SetUnChoosed(GChoosed);
+        GChoosed := 0;
+        exit;
+      end;
+    end;
   end;
 end;
 
-procedure TFormMain.PaintBoxMainMouseMove(Sender: TObject;
-  Shift: TShiftState; X, Y: Integer);
+procedure TFormMain.PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState;
+  x, y: integer);
 var
   tmpPosType: TPosType;
   tmpNum: integer;
 begin
-  if (X <= 4 * 75) and (Y <= 100) then
+  if (x <= 4 * 75) and (y <= 100) then
   begin
     if GKingDirection = TORIGHT then
     begin
       GKingDirection := TOLEFT;
       UpDateKing(GKingDirection);
     end;
-  end else if (X >= (Self.ClientWidth - 4 * 75)) and (Y <= 100) then
+  end
+  else if (x >= (Self.ClientWidth - 4 * 75)) and (y <= 100) then
   begin
     if GKingDirection = TOLEFT then
     begin
@@ -635,9 +687,11 @@ begin
       UpDateKing(GKingDirection);
     end;
   end;
-  if (not GRunning) or (GChoosed = 0) then exit;
-  tmpNum := GetTargetPokeNumber(X, Y, tmpPosType);
-  if tmpNum = 0 then exit;
+  if (not GRunning) or (GChoosed = 0) then
+    exit;
+  tmpNum := GetTargetPokeNumber(x, y, tmpPosType);
+  if tmpNum = 0 then
+    exit;
   if IndicatePokeCanMove(GChoosed, tmpNum, GChoosedType, tmpPosType) then
   begin
     Screen.Cursors[1] := LoadCursor(hInstance, 'DownCursor');
@@ -658,7 +712,7 @@ end;
 
 function TFormMain.PokeCanMove(tmpPokeDown, tmpPokeUp: TPoke): boolean;
 begin
-  result := false;
+  result := False;
   if tmpPokeUp.x = tmpPokeDown.x + 1 then
   begin
     if (tmpPokeDown.y = 1) or (tmpPokeDown.y = 4) then
@@ -668,9 +722,10 @@ begin
         result := true;
         exit;
       end;
-    end else
+    end
+    else
     begin
-      if (tmpPokeUp.y =1) or (tmpPokeUp.y = 4) then
+      if (tmpPokeUp.y = 1) or (tmpPokeUp.y = 4) then
       begin
         result := true;
         exit;
@@ -679,42 +734,55 @@ begin
   end;
 end;
 
-procedure TFormMain.SetChoosed(tmp: Integer);
+procedure TFormMain.SetChoosed(tmp: integer);
 var
   tmpIndex: integer;
 begin
-  if tmp = 0 then exit;
+  if tmp = 0 then
+    exit;
   if GChoosedType = TYPEARRAY then
   begin
     tmpIndex := GArrayIndex[tmp];
     GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GArray[tmp][tmpIndex].x, GArray[tmp][tmpIndex].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
-  end else if GChoosedType = TYPETEMP then
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
+      tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap);
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GArray[tmp][tmpIndex].x, GArray[tmp][tmpIndex].y]));
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
+      tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
+  end
+  else if GChoosedType = TYPETEMP then
   begin
-    if GTemp[tmp].x = 0 then exit;
+    if GTemp[tmp].x = 0 then
+      exit;
     GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GTemp[tmp].x, GTemp[tmp].y]));
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap, 100);
   end;
 end;
 
-procedure TFormMain.SetUnChoosed(tmp: Integer);
+procedure TFormMain.SetUnChoosed(tmp: integer);
 var
   tmpIndex: integer;
 begin
-  if tmp = 0 then exit;
+  if tmp = 0 then
+    exit;
   if GChoosedType = TYPEARRAY then
   begin
     tmpIndex := GArrayIndex[tmp];
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GArray[tmp][tmpIndex].x, GArray[tmp][tmpIndex].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap);
-  end else if GChoosedType = TYPETEMP then
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GArray[tmp][tmpIndex].x, GArray[tmp][tmpIndex].y]));
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
+      tmpIndex * ARRAY_MULY + ARRAY_STARTY, GBitmap);
+  end
+  else if GChoosedType = TYPETEMP then
   begin
-    if GTemp[tmp].x = 0 then exit;
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
+    if GTemp[tmp].x = 0 then
+      exit;
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GTemp[tmp].x, GTemp[tmp].y]));
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
   end;
 end;
@@ -731,7 +799,8 @@ begin
   for i := 1 to 8 do
     if GArrayIndex[i] = 0 then
       inc(numArray);
-  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp * numArray + 1;
+  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp *
+    numArray + 1;
 end;
 
 function TFormMain.GetBlankSpace_New(tmpCol: integer): integer;
@@ -747,32 +816,35 @@ begin
     if GArrayIndex[i] = 0 then
       inc(numArray);
   dec(numArray);
-  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp * numArray + 1;
+  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp *
+    numArray + 1;
 end;
 
 function TFormMain.GetCanMovePokeNumber(tmpFrom, tmpTo: integer): integer;
 var
   tmpNum: integer;
   tmpTargetPoke: TPoke;
-  i: Integer;
+  i: integer;
 begin
   tmpNum := 1;
   result := 0;
-  if (GArrayIndex[tmpFrom] = 0) or (GArrayIndex[tmpTo] = 0) then exit;
+  if (GArrayIndex[tmpFrom] = 0) or (GArrayIndex[tmpTo] = 0) then
+    exit;
   tmpTargetPoke := GArray[tmpTo][GArrayIndex[tmpTo]];
-  //第一步 判断Array[tmpTo]上有多少个连续扑克
+  // 第一步 判断Array[tmpTo]上有多少个连续扑克
   for i := GArrayIndex[tmpFrom] - 1 downto 1 do
   begin
     if PokeCanMove(GArray[tmpFrom][i + 1], GArray[tmpFrom][i]) then
     begin
       inc(tmpNum);
       continue;
-    end else
+    end
+    else
       break;
   end;
-//  ShowMessageFmt('有%d个连续的扑克', [tmpNum]);
+  // ShowMessageFmt('有%d个连续的扑克', [tmpNum]);
   result := 0;
- //第二步 在这么多个连续扑克上检查应该哪一个就可以开始移动
+  // 第二步 在这么多个连续扑克上检查应该哪一个就可以开始移动
   for i := GArrayIndex[tmpFrom] - tmpNum + 1 to GArrayIndex[tmpFrom] do
   begin
     if PokeCanMove(GArray[tmpFrom][i], tmpTargetPoke) then
@@ -786,18 +858,20 @@ end;
 function TFormMain.GetCanMovePokeNumber_New(tmpCol: integer): integer;
 var
   tmpNum: integer;
-  i: Integer;
+  i: integer;
 begin
   tmpNum := 1;
   result := 0;
-  if (GArrayIndex[tmpCol] = 0) then exit;
+  if (GArrayIndex[tmpCol] = 0) then
+    exit;
   for i := GArrayIndex[tmpCol] - 1 downto 1 do
   begin
     if PokeCanMove(GArray[tmpCol][i + 1], GArray[tmpCol][i]) then
     begin
       inc(tmpNum);
       continue;
-    end else
+    end
+    else
       break;
   end;
   result := tmpNum;
@@ -806,13 +880,18 @@ end;
 function TFormMain.GetContainerNumber(tmpPoke: TPoke): integer;
 begin
   result := 0;
-  if tmpPoke.y = 1 then result := 1
-  else if tmpPoke.y = 4 then result := 2
-  else if tmpPoke.y = 2 then result := 3
-  else if tmpPoke.y = 3 then result := 4;
+  if tmpPoke.y = 1 then
+    result := 1
+  else if tmpPoke.y = 4 then
+    result := 2
+  else if tmpPoke.y = 2 then
+    result := 3
+  else if tmpPoke.y = 3 then
+    result := 4;
 end;
 
-function TFormMain.GetPokeNumber(var tmpNumber: integer; var tmpArray: array of string; var tmpIndex: integer): TPoke;
+function TFormMain.GetPokeNumber(var tmpNumber: integer;
+  var tmpArray: array of string; var tmpIndex: integer): TPoke;
 var
   tmpX, tmpY: integer;
   tmpPoke: TPoke;
@@ -827,26 +906,26 @@ begin
   inc(tmpNumber);
 end;
 
-function TFormMain.GetTargetPokeNumber(X, Y: integer;
+function TFormMain.GetTargetPokeNumber(x, y: integer;
   var tmpPosType: TPosType): integer;
 var
-  i: Integer;
+  i: integer;
 begin
   result := 0;
-  if (X <= 4 * TEMP_MULX) and (Y <= POKE_HEIGHT) then
+  if (x <= 4 * TEMP_MULX) and (y <= POKE_HEIGHT) then
   begin
     for i := 1 to 4 do
-      if X >= (4 - i) * POKE_WIDTH then
+      if x >= (4 - i) * POKE_WIDTH then
       begin
         tmpPosType := TYPETEMP;
         result := 5 - i;
         exit;
       end;
   end;
-  if (Y >= ARRAY_MULY + ARRAY_STARTY) then
+  if (y >= ARRAY_MULY + ARRAY_STARTY) then
   begin
     for i := 1 to 8 do
-      if X >= (8 - i) * ARRAY_MULX + ARRAY_STARTX then
+      if x >= (8 - i) * ARRAY_MULX + ARRAY_STARTX then
       begin
         tmpPosType := TYPEARRAY;
         result := 9 - i;
@@ -859,7 +938,7 @@ function TFormMain.HavePoke(tmpPoke: TPoke): boolean;
 var
   i, j: integer;
 begin
-  result := false;
+  result := False;
   for i := 1 to 4 do
     if (GTemp[i].x = tmpPoke.x) and (GTemp[i].y = tmpPoke.y) then
     begin
@@ -882,7 +961,7 @@ function TFormMain.IndicatePokeCanMove(tmpNumFrom, tmpNumTo: integer;
 var
   tmpPokeFrom, tmpPokeTo: TPoke;
 begin
-  result := false;
+  result := False;
   if tmpTypeFrom = TYPETEMP then
   begin
     if tmpTypeTo = TYPETEMP then
@@ -894,7 +973,8 @@ begin
         result := true;
         exit;
       end;
-    end else if tmpTypeTo = TYPEARRAY then
+    end
+    else if tmpTypeTo = TYPEARRAY then
     begin
       tmpPokeFrom := GTemp[tmpNumFrom];
       tmpPokeTo := GArray[tmpNumTo][GArrayIndex[tmpNumTo]];
@@ -904,7 +984,8 @@ begin
         exit;
       end;
     end;
-  end else if tmpTypeFrom = TYPEARRAY then
+  end
+  else if tmpTypeFrom = TYPEARRAY then
   begin
     if tmpTypeTo = TYPETEMP then
     begin
@@ -914,7 +995,8 @@ begin
         result := true;
         exit;
       end;
-    end else if tmpTypeTo = TYPEARRAY then
+    end
+    else if tmpTypeTo = TYPEARRAY then
     begin
       if GetCanMovePokeNumber(tmpNumFrom, tmpNumTo) > 0 then
       begin
@@ -927,14 +1009,14 @@ end;
 
 function TFormMain.Another(tmpPoke: TPoke): boolean;
 var
-  i: Integer;
+  i: integer;
 begin
   result := true;
   for i := 1 to 4 do
   begin
     if tmpPoke.x - GContainer[i].x > 2 then
     begin
-      result := false;
+      result := False;
       exit;
     end;
   end;
@@ -957,16 +1039,22 @@ var
   tmpTargetPoke: TPoke;
   tmpContainer: integer;
 begin
-  result := false;
-  //第一步得到Container的位置
+  result := False;
+  // 第一步得到Container的位置
   tmpContainer := 0;
-  if tmpPoke.y = 1 then tmpContainer := 1
-  else if tmpPoke.y = 4 then tmpContainer := 2
-  else if tmpPoke.y = 2 then tmpContainer := 3
-  else if tmpPoke.y = 3 then tmpContainer := 4;
-  //第二步判断Container位置的Poke
-  if GContainer[tmpContainer].x <> tmpPoke.x - 1 then exit;
-  if not Another(tmpPoke) then exit;
+  if tmpPoke.y = 1 then
+    tmpContainer := 1
+  else if tmpPoke.y = 4 then
+    tmpContainer := 2
+  else if tmpPoke.y = 2 then
+    tmpContainer := 3
+  else if tmpPoke.y = 3 then
+    tmpContainer := 4;
+  // 第二步判断Container位置的Poke
+  if GContainer[tmpContainer].x <> tmpPoke.x - 1 then
+    exit;
+  if not Another(tmpPoke) then
+    exit;
   tmpTargetPoke.x := tmpPoke.x;
   if tmpPoke.y = 1 then
   begin
@@ -975,7 +1063,8 @@ begin
     begin
       result := true;
       exit;
-    end else
+    end
+    else
     begin
       tmpTargetPoke.x := tmpPoke.x - 1;
       if tmpTargetPoke.x <= 0 then
@@ -994,14 +1083,16 @@ begin
         end;
       end;
     end;
-  end else if tmpPoke.y = 4 then
+  end
+  else if tmpPoke.y = 4 then
   begin
     tmpTargetPoke.y := 1;
     if HavePoke(tmpTargetPoke) then
     begin
       result := true;
       exit;
-    end else
+    end
+    else
     begin
       tmpTargetPoke.x := tmpPoke.x - 1;
       if tmpTargetPoke.x <= 0 then
@@ -1020,14 +1111,16 @@ begin
         end;
       end;
     end;
-  end else if tmpPoke.y = 2 then
+  end
+  else if tmpPoke.y = 2 then
   begin
     tmpTargetPoke.y := 3;
-    if HavePoke(tmpTargetPoke)then
+    if HavePoke(tmpTargetPoke) then
     begin
       result := true;
       exit;
-    end else
+    end
+    else
     begin
       tmpTargetPoke.x := tmpPoke.x - 1;
       if tmpTargetPoke.x <= 0 then
@@ -1046,14 +1139,16 @@ begin
         end;
       end;
     end;
-  end else if tmpPoke.y = 3 then
+  end
+  else if tmpPoke.y = 3 then
   begin
     tmpTargetPoke.y := 2;
-    if HavePoke(tmpTargetPoke)then
+    if HavePoke(tmpTargetPoke) then
     begin
       result := true;
       exit;
-    end else
+    end
+    else
     begin
       tmpTargetPoke.x := tmpPoke.x - 1;
       if tmpTargetPoke.x <= 0 then
@@ -1075,11 +1170,12 @@ begin
   end;
 end;
 
-function TFormMain.CanPutToContainer(tmpPoke: TPoke; tmpContainer: integer): boolean;
+function TFormMain.CanPutToContainer(tmpPoke: TPoke;
+  tmpContainer: integer): boolean;
 var
   tmpPokeContainer: TPoke;
 begin
-  result := false;
+  result := False;
   if GContainer[tmpContainer].x = 0 then
   begin
     if CanDelete(tmpPoke) then
@@ -1087,10 +1183,12 @@ begin
       result := true;
       exit;
     end;
-  end else
+  end
+  else
   begin
     tmpPokeContainer := GContainer[tmpContainer];
-    if (tmpPoke.x = tmpPokeContainer.x + 1) and (tmpPoke.y = tmpPokeContainer.y) then
+    if (tmpPoke.x = tmpPokeContainer.x + 1) and (tmpPoke.y = tmpPokeContainer.y)
+    then
     begin
       result := true;
       exit;
@@ -1105,7 +1203,7 @@ var
 begin
   PaintBoxMain.Cursor := crHourGlass;
   Application.ProcessMessages;
-  Need := false;
+  Need := False;
   for i := 1 to 4 do
     if GTemp[i].x <> 0 then
     begin
@@ -1117,7 +1215,7 @@ begin
     if CanDelete(GArray[i][GArrayIndex[i]]) then
     begin
       PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
-    //  Sleep(100);
+      // Sleep(100);
       AutoMovePokeFromArrayToContainer(i);
       Need := true;
     end;
@@ -1131,7 +1229,7 @@ procedure TFormMain.CheckGame(tmp: integer);
 begin
   if tmp = 0 then
   begin
-    GRunning := false;
+    GRunning := False;
     MessageBox(Self.Handle, '恭喜，你完成了！', '信息', MB_OK);
     PaintBoxMain.OnPaint(nil);
   end;
@@ -1142,22 +1240,25 @@ var
   i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 127, 0);
-  PaintBoxMain.Canvas.Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY, ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
+  PaintBoxMain.Canvas.Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY,
+    ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
   for i := 1 to 8 do
     DrawArrayNumber(i);
 end;
 
 procedure TFormMain.DrawArrayNumber(tmpCol: integer);
 var
-  i: Integer;
+  i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 127, 0);
-  PaintBoxMain.Canvas.Rectangle((tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY,
-                                  (tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX + 71, 52 * ARRAY_MULY + ARRAY_STARTY);
+  PaintBoxMain.Canvas.Rectangle((tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX,
+    1 * ARRAY_MULY + ARRAY_STARTY, (tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX +
+    71, 52 * ARRAY_MULY + ARRAY_STARTY);
   if GRunning then
   begin
     for i := 1 to GArrayIndex[tmpCol] do
-      DrawPoke((tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX, i * ARRAY_MULY + ARRAY_STARTY, GArray[tmpCol][i]);
+      DrawPoke((tmpCol - 1) * ARRAY_MULX + ARRAY_STARTX,
+        i * ARRAY_MULY + ARRAY_STARTY, GArray[tmpCol][i]);
   end;
 end;
 
@@ -1166,10 +1267,14 @@ var
   i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 71, 0, PaintBoxMain.Width, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 2 * 71, 0, PaintBoxMain.Width - 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 3 * 71, 0, PaintBoxMain.Width - 2 * 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 4 * 71, 0, PaintBoxMain.Width - 3 * 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 71, 0,
+    PaintBoxMain.Width, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 2 * 71, 0,
+    PaintBoxMain.Width - 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 3 * 71, 0,
+    PaintBoxMain.Width - 2 * 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 4 * 71, 0,
+    PaintBoxMain.Width - 3 * 71, 96);
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
   PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width, 0);
   PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 4 * 71, 0);
@@ -1192,15 +1297,18 @@ procedure TFormMain.DrawContainerNumber(tmpNum: integer);
 begin
   if (GContainer[tmpNum].x <> 0) or (GContainer[tmpNum].y <> 0) then
   begin
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GContainer[tmpNum].x, GContainer[tmpNum].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GContainer[tmpNum].x, GContainer[tmpNum].y]));
     PaintBoxMain.Canvas.Draw(Self.Width - (5 - tmpNum) * 71 - 6, 0, GBitmap);
   end;
 end;
 
 procedure TFormMain.DrawPoke(tmpX, tmpY: integer; tmpPoke: TPoke);
 begin
-  GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [tmpPoke.x, tmpPoke.y]));
-  PaintBoxMain.Canvas.StretchDraw(Rect(tmpX, tmpY, tmpX + POKE_WIDTH, tmpY + POKE_HEIGHT), GBitmap);
+  GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+    [tmpPoke.x, tmpPoke.y]));
+  PaintBoxMain.Canvas.StretchDraw(Rect(tmpX, tmpY, tmpX + POKE_WIDTH,
+    tmpY + POKE_HEIGHT), GBitmap);
 end;
 
 procedure TFormMain.DrawTempArea();
@@ -1228,46 +1336,48 @@ begin
       DrawTempAreaNumber(i);
 end;
 
-procedure TFormMain.DrawTempAreaNumber(tmpNum: Integer);
+procedure TFormMain.DrawTempAreaNumber(tmpNum: integer);
 begin
   if (GTemp[tmpNum].x <> 0) or (GTemp[tmpNum].y <> 0) then
   begin
-    GBitmap.LoadFromResourceName(hInstance, Format(RESOURCEBITMAP, [GTemp[tmpNum].x, GTemp[tmpNum].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
+      [GTemp[tmpNum].x, GTemp[tmpNum].y]));
     PaintBoxMain.Canvas.Draw((tmpNum - 1) * TEMP_MULX, 0, GBitmap);
-  end else
-  begin
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-  case tmpNum of
-  1:
-  begin
-    PaintBoxMain.Canvas.Rectangle(0, 0, 71, 96);
-  end;
-  2:
-  begin
-    PaintBoxMain.Canvas.Rectangle(71, 0, 142, 96);
-  end;
-  3:
-  begin
-    PaintBoxMain.Canvas.Rectangle(142, 0, 213, 96);
-  end;
-  4:
-  begin
-    PaintBoxMain.Canvas.Rectangle(213, 0, 284, 96);
   end
   else
-  ;
-  end;
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
-  PaintBoxMain.Canvas.MoveTo(0, 0);
-  PaintBoxMain.Canvas.LineTo(0, 96);
-  PaintBoxMain.Canvas.MoveTo(0, 0);
-  PaintBoxMain.Canvas.LineTo(284, 0);
-  PaintBoxMain.Canvas.MoveTo(71, 0);
-  PaintBoxMain.Canvas.LineTo(71, 96);
-  PaintBoxMain.Canvas.MoveTo(142, 0);
-  PaintBoxMain.Canvas.LineTo(142, 96);
-  PaintBoxMain.Canvas.MoveTo(213, 0);
-  PaintBoxMain.Canvas.LineTo(213, 96);
+  begin
+    PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
+    case tmpNum of
+      1:
+        begin
+          PaintBoxMain.Canvas.Rectangle(0, 0, 71, 96);
+        end;
+      2:
+        begin
+          PaintBoxMain.Canvas.Rectangle(71, 0, 142, 96);
+        end;
+      3:
+        begin
+          PaintBoxMain.Canvas.Rectangle(142, 0, 213, 96);
+        end;
+      4:
+        begin
+          PaintBoxMain.Canvas.Rectangle(213, 0, 284, 96);
+        end
+    else
+      ;
+    end;
+    PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
+    PaintBoxMain.Canvas.MoveTo(0, 0);
+    PaintBoxMain.Canvas.LineTo(0, 96);
+    PaintBoxMain.Canvas.MoveTo(0, 0);
+    PaintBoxMain.Canvas.LineTo(284, 0);
+    PaintBoxMain.Canvas.MoveTo(71, 0);
+    PaintBoxMain.Canvas.LineTo(71, 96);
+    PaintBoxMain.Canvas.MoveTo(142, 0);
+    PaintBoxMain.Canvas.LineTo(142, 96);
+    PaintBoxMain.Canvas.MoveTo(213, 0);
+    PaintBoxMain.Canvas.LineTo(213, 96);
   end;
 end;
 

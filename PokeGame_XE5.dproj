@@ -1,0 +1,363 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BB96D3F4-0AF5-480C-94F0-D026442A940D}</ProjectGuid>
+        <MainSource>PokeGame_XE5.dpr</MainSource>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+        <ProjectVersion>15.1</ProjectVersion>
+        <Base>True</Base>
+        <AppType>Application</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>1</TargetedPlatforms>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>2052</VerInfo_Locale>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_UsePackage>vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;teeui;teedb;tee;dss;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;Rave50CLX;Rave50VCL;dclOfficeXP;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_DependencyCheckOutputName>PokeGame.exe</DCC_DependencyCheckOutputName>
+        <DCC_Platform>x86</DCC_Platform>
+        <DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+        <DCC_N>true</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_K>false</DCC_K>
+        <DCC_E>false</DCC_E>
+        <DCC_F>false</DCC_F>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Icon_MainIcon>PokeGame_Icon.ico</Icon_MainIcon>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <Icon_MainIcon>PokeGame_Icon.ico</Icon_MainIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="UnitMain.pas">
+            <Form>FormMain</Form>
+        </DCCReference>
+        <DCCReference Include="UnitMove.pas">
+            <Form>FormMove</Form>
+        </DCCReference>
+        <RcItem Include="资源\KingRight.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>KingRight</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\0_0.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>0_0</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\1_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>1_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\1_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>1_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\1_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>1_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\1_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>1_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\2_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>2_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\2_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>2_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\2_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>2_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\2_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>2_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\3_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>3_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\3_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>3_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\3_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>3_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\3_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>3_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\4_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>4_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\4_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>4_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\4_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>4_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\4_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>4_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\5_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>5_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\5_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>5_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\5_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>5_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\5_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>5_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\6_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>6_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\6_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>6_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\6_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>6_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\6_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>6_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\7_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>7_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\7_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>7_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\7_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>7_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\7_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>7_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\8_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>8_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\8_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>8_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\8_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>8_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\8_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>8_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\9_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>9_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\9_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>9_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\9_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>9_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\9_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>9_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\10_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>10_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\10_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>10_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\10_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>10_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\10_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>10_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\11_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>11_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\11_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>11_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\11_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>11_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\11_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>11_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\12_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>12_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\12_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>12_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\12_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>12_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\12_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>12_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\13_1.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>13_1</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\13_2.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>13_2</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\13_3.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>13_3</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\13_4.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>13_4</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\KingLeft.bmp">
+            <ResourceType>Bitmap</ResourceType>
+            <ResourceId>KingLeft</ResourceId>
+        </RcItem>
+        <RcItem Include="资源\DownCursor.cur">
+            <ResourceType>Cursor</ResourceType>
+            <ResourceId>DownCursor</ResourceId>
+        </RcItem>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>VCLApplication</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">PokeGame_XE5.dpr</Source>
+                </Source>
+                <Parameters/>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">False</VersionInfo>
+                    <VersionInfo Name="MajorVer">1</VersionInfo>
+                    <VersionInfo Name="MinorVer">0</VersionInfo>
+                    <VersionInfo Name="Release">0</VersionInfo>
+                    <VersionInfo Name="Build">0</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">2052</VersionInfo>
+                    <VersionInfo Name="CodePage">936</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName"/>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright"/>
+                    <VersionInfoKeys Name="LegalTrademarks"/>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName"/>
+                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="Comments"/>
+                </VersionInfoKeys>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>
