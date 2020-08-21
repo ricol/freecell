@@ -1,4 +1,4 @@
-unit UnitMain;
+unit main;
 
 {
   CONTACT: WANGXINGHE1983@GMAIL.COM
@@ -100,7 +100,7 @@ var
 
 implementation
 
-uses UnitMove;
+uses Move;
 
 {$R *.dfm}
 

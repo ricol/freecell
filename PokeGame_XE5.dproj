@@ -72,10 +72,10 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="UnitMain.pas">
+        <DCCReference Include="main.pas">
             <Form>FormMain</Form>
         </DCCReference>
-        <DCCReference Include="UnitMove.pas">
+        <DCCReference Include="move.pas">
             <Form>FormMove</Form>
         </DCCReference>
         <RcItem Include="资源\KingRight.bmp">

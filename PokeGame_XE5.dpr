@@ -4,8 +4,8 @@ program PokeGame_XE5;
 
 uses
   Forms,
-  UnitMain in 'UnitMain.pas' {FormMain} ,
-  UnitMove in 'UnitMove.pas' {FormMove};
+  main in 'main.pas' {FormMain},
+  move in 'move.pas' {FormMove};
 
 {$R *.res}
 
