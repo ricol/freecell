@@ -4,7 +4,7 @@ program PokeGame_XE5;
 
 uses
   Forms,
-  UnitMain in 'UnitMain.pas' {FormMain},
+  UnitMain in 'UnitMain.pas' {FormMain} ,
   UnitMove in 'UnitMove.pas' {FormMove};
 
 {$R *.res}
@@ -15,4 +15,5 @@ begin
   Application.CreateForm(TFormMain, FormMain);
   Application.CreateForm(TFormMove, FormMove);
   Application.Run;
+
 end.
