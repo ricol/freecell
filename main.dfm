@@ -183,6 +183,7 @@ object FormMain: TFormMain
       end
       object MenuGameReplay: TMenuItem
         Caption = #37325#29609
+        OnClick = MenuGameReplayClick
       end
       object MenuGameStop: TMenuItem
         Caption = #20851#38381

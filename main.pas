@@ -19,6 +19,8 @@ type
 
   TArray = array [1 .. 100] of TPoke;
 
+  TPokerArray = array [1 .. 8] of TArray;
+
   TPosType = (TYPEARRAY, TYPETEMP, TYPECONTAINER);
 
   TFormMain = class(TForm)
@@ -48,18 +50,15 @@ type
     procedure MenuGameExitClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure PaintBoxMainPaint(Sender: TObject);
-    procedure PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; x, y: integer);
-    procedure PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState;
-      x, y: integer);
+    procedure PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; x, y: integer);
+    procedure PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState; x, y: integer);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure MenuGameReplayClick(Sender: TObject);
   private
     procedure UpDateKing(tmp: TDIRECTION);
-    function GetPokeNumber(var num: integer; var data: array of string;
-      var index: integer): TPoke;
+    function GetPokeNumber(var num: integer; var data: array of string; var index: integer): TPoke;
     procedure DrawPoke(x, y: integer; poke: TPoke);
-    function NotInArraY(x, y: integer; var data: array of string;
-      var index: integer): boolean;
+    function NotInArraY(x, y: integer; var data: array of string; var index: integer): boolean;
     procedure SetUnChoosed(tmp: integer);
     procedure SetChoosed(tmp: integer);
     procedure MovePokeFromArrayToTemp(col, num: integer);
@@ -70,8 +69,7 @@ type
     procedure MovePokeFromArrayToContainer(col, container: integer);
     procedure AutoMovePokeFromArrayToContainer(col: integer);
     function PokeCanMove(pokeDown, pokeUp: TPoke): boolean;
-    function IndicatePokeCanMove(numFrom, numTo: integer;
-      typeFrom, typeTO: TPosType): boolean;
+    function IndicatePokeCanMove(numFrom, numTo: integer; typeFrom, typeTO: TPosType): boolean;
     function CanPutToContainer(poke: TPoke; container: integer): boolean;
     function CanDelete(poke: TPoke): boolean;
     function HavePoke(poke: TPoke): boolean;
@@ -90,6 +88,7 @@ type
     procedure DrawArrayNumber(col: integer);
     procedure DrawContainerNumber(num: integer);
     procedure CheckGame(tmp: integer);
+    procedure restart(flag: boolean; data: TPokerArray);
     { Private declarations }
   public
     { Public declarations }
@@ -124,7 +123,7 @@ const
 var
   GRect: TRect;
   GKingDirection: TDIRECTION = TORIGHT;
-  GArray: array [1 .. 8] of TArray;
+  GArray, GBackupArray: TPokerArray;
   GTempArray: TArray;
   GTempArrayIndex: integer;
   GArrayIndex: array [1 .. 8] of integer = (
@@ -176,8 +175,7 @@ begin
   GBitmap.Free;
 end;
 
-procedure TFormMain.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TFormMain.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_ESCAPE then
     MenuGameStopClick(Sender);
@@ -207,43 +205,14 @@ begin
   Close;
 end;
 
-procedure TFormMain.MenuGameStartClick(Sender: TObject);
-var
-  i, total, num: integer;
+procedure TFormMain.MenuGameReplayClick(Sender: TObject);
 begin
-  GRunning := False;
-  GChoosed := 0;
-  GTotalPoke := 52;
-  DrawTempArea();
-  DrawContainerArea();
-  DrawArrayArea();
-  GRunning := true;
-  for i := 1 to 4 do
-  begin
-    GTemp[i].x := 0;
-    GTemp[i].y := 0;
-    GContainer[i].x := 0;
-    GContainer[i].y := 0;
-  end;
-  DrawTempArea();
-  DrawContainerArea();
-  for i := 1 to 8 do
-    GArrayIndex[i] := 0;
-  total := 0;
-  for i := 1 to 52 do
-    GStringArray[i] := '';
-  GStringIndex := 1;
-  while total <= 51 do
-  begin
-    num := total mod 8 + 1;
-    inc(GArrayIndex[num]);
-    // sleep(5);
-    GArray[num][GArrayIndex[num]] := GetPokeNumber(total, GStringArray,
-      GStringIndex);
-    DrawPoke((num - 1) * ARRAY_MULX + ARRAY_STARTX,
-      GArrayIndex[num] * ARRAY_MULY + ARRAY_STARTY,
-      GArray[num][GArrayIndex[num]]);
-  end;
+  Self.restart(true, GBackupArray);
+end;
+
+procedure TFormMain.MenuGameStartClick(Sender: TObject);
+begin
+  Self.restart(False, GBackupArray);
 end;
 
 procedure TFormMain.MenuGameStopClick(Sender: TObject);
@@ -254,8 +223,7 @@ end;
 
 procedure TFormMain.MenuHelpAboutClick(Sender: TObject);
 begin
-  MessageBox(Self.Handle, PChar('游戏名称：空当接龙' + sLineBreak + '开发者：RICOL' +
-    sLineBreak + '联系：WANGXINGHE1983@GMAIL.COM'), '关于', MB_OK);
+  MessageBox(Self.Handle, PChar('游戏名称：空当接龙' + sLineBreak + '开发者：RICOL' + sLineBreak + '联系：WANGXINGHE1983@GMAIL.COM'), '关于', MB_OK);
 end;
 
 procedure TFormMain.MovePokeFromArrayToArray(colFrom, colTo: integer);
@@ -330,8 +298,7 @@ begin
   DrawTempAreaNumber(numTo);
 end;
 
-function TFormMain.NotInArraY(x, y: integer; var data: array of string;
-  var index: integer): boolean;
+function TFormMain.NotInArraY(x, y: integer; var data: array of string; var index: integer): boolean;
 var
   i: integer;
 begin
@@ -348,8 +315,7 @@ begin
   inc(index);
 end;
 
-procedure TFormMain.PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; x, y: integer);
+procedure TFormMain.PaintBoxMainMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; x, y: integer);
 var
   i, num, col, container, pokeNum, space: integer;
   pokeOne, pokeTwo: TPoke;
@@ -404,10 +370,8 @@ begin
               GChoosed := 0;
               exit;
             end;
-            FormMove.Left := Self.Left + (Self.Width div 2) -
-              FormMove.Width div 2;
-            FormMove.Top := Self.Top + (Self.Height div 2) -
-              FormMove.Height div 2;
+            FormMove.Left := Self.Left + (Self.Width div 2) - FormMove.Width div 2;
+            FormMove.Top := Self.Top + (Self.Height div 2) - FormMove.Height div 2;
             FormMove.ShowModal;
             if GCancel then
             begin
@@ -421,8 +385,7 @@ begin
               if pokeNum > space then
                 pokeNum := space;
               GTempArrayIndex := 0;
-              for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] -
-                pokeNum + 1 do
+              for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] - pokeNum + 1 do
               begin
                 if i <= 0 then
                   break;
@@ -456,8 +419,7 @@ begin
           space := GetBlankSpace();
           if space < pokeNum then
           begin
-            MessageBox(Self.Handle, PChar(format('要求移动 %d 张牌。但所剩空间只能够移动 %d 张牌。',
-              [pokeNum, space])), '信息', MB_OK or MB_ICONINFORMATION);
+            MessageBox(Self.Handle, PChar(format('要求移动 %d 张牌。但所剩空间只能够移动 %d 张牌。', [pokeNum, space])), '信息', MB_OK or MB_ICONINFORMATION);
             SetUnChoosed(GChoosed);
             GChoosed := 0;
             exit;
@@ -466,8 +428,7 @@ begin
           begin
             // 开始移动整堆的扑克
             GTempArrayIndex := 0;
-            for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] -
-              pokeNum + 1 do
+            for i := GArrayIndex[GChoosed] downto GArrayIndex[GChoosed] - pokeNum + 1 do
             begin
               if i <= 0 then
                 break;
@@ -519,8 +480,7 @@ begin
         else
         begin // 之前点击的Temp区域为空则出现异常错误
           ShowMessage(IntToStr(GChoosed));
-          MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息',
-            MB_OK or MB_ICONERROR);
+          MessageBox(Self.Handle, '出现未知错误，游戏将关闭！', '系统信息', MB_OK or MB_ICONERROR);
           Application.Terminate;
         end;
       end
@@ -663,8 +623,7 @@ begin
   end;
 end;
 
-procedure TFormMain.PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState;
-  x, y: integer);
+procedure TFormMain.PaintBoxMainMouseMove(Sender: TObject; Shift: TShiftState; x, y: integer);
 var
   posType: TPosType;
   num: integer;
@@ -732,6 +691,65 @@ begin
   end;
 end;
 
+procedure TFormMain.restart(flag: boolean; data: TPokerArray);
+var
+  i, total, num: integer;
+  j: integer;
+begin
+  GRunning := False;
+  GChoosed := 0;
+  GTotalPoke := 52;
+  DrawTempArea();
+  DrawContainerArea();
+  DrawArrayArea();
+  GRunning := true;
+  for i := 1 to 4 do
+  begin
+    GTemp[i].x := 0;
+    GTemp[i].y := 0;
+    GContainer[i].x := 0;
+    GContainer[i].y := 0;
+  end;
+  DrawTempArea();
+  DrawContainerArea();
+  for i := 1 to 8 do
+    GArrayIndex[i] := 0;
+  total := 0;
+  for i := 1 to 52 do
+    GStringArray[i] := '';
+  GStringIndex := 1;
+  if flag then
+  begin
+    while total <= 51 do
+    begin
+      num := total mod 8 + 1;
+      inc(GArrayIndex[num]);
+      sleep(5);
+      GArray[num][GArrayIndex[num]] := data[num][GArrayIndex[num]];
+      inc(total);
+      DrawPoke((num - 1) * ARRAY_MULX + ARRAY_STARTX, GArrayIndex[num] * ARRAY_MULY + ARRAY_STARTY, GArray[num][GArrayIndex[num]]);
+    end;
+  end
+  else
+  begin
+    while total <= 51 do
+    begin
+      num := total mod 8 + 1;
+      inc(GArrayIndex[num]);
+      sleep(5);
+      GArray[num][GArrayIndex[num]] := GetPokeNumber(total, GStringArray, GStringIndex);
+      DrawPoke((num - 1) * ARRAY_MULX + ARRAY_STARTX, GArrayIndex[num] * ARRAY_MULY + ARRAY_STARTY, GArray[num][GArrayIndex[num]]);
+    end;
+    for i := 1 to 8 do
+    begin
+      for j := 1 to 100 do
+      begin
+        GBackupArray[i][j] := GArray[i][j];
+      end;
+    end;
+  end;
+end;
+
 procedure TFormMain.SetChoosed(tmp: integer);
 var
   index: integer;
@@ -742,12 +760,9 @@ begin
   begin
     index := GArrayIndex[tmp];
     GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
-      index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GArray[tmp][index].x, GArray[tmp][index].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
-      index * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GArray[tmp][index].x, GArray[tmp][index].y]));
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
   end
   else if GChoosedType = TYPETEMP then
   begin
@@ -755,8 +770,7 @@ begin
       exit;
     GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GTemp[tmp].x, GTemp[tmp].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap, 100);
   end;
 end;
@@ -770,17 +784,14 @@ begin
   if GChoosedType = TYPEARRAY then
   begin
     index := GArrayIndex[tmp];
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GArray[tmp][index].x, GArray[tmp][index].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX,
-      index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GArray[tmp][index].x, GArray[tmp][index].y]));
+    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
   end
   else if GChoosedType = TYPETEMP then
   begin
     if GTemp[tmp].x = 0 then
       exit;
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GTemp[tmp].x, GTemp[tmp].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
     PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
   end;
 end;
@@ -797,8 +808,7 @@ begin
   for i := 1 to 8 do
     if GArrayIndex[i] = 0 then
       inc(numArray);
-  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp *
-    numArray + 1;
+  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp * numArray + 1;
 end;
 
 function TFormMain.GetBlankSpace_New(col: integer): integer;
@@ -814,8 +824,7 @@ begin
     if GArrayIndex[i] = 0 then
       inc(numArray);
   dec(numArray);
-  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp *
-    numArray + 1;
+  result := numTemp + (numArray + numArray * numArray) div 2 + numTemp * numArray + 1;
 end;
 
 function TFormMain.GetCanMovePokeNumber(_from, _to: integer): integer;
@@ -888,8 +897,7 @@ begin
     result := 4;
 end;
 
-function TFormMain.GetPokeNumber(var num: integer; var data: array of string;
-  var index: integer): TPoke;
+function TFormMain.GetPokeNumber(var num: integer; var data: array of string; var index: integer): TPoke;
 var
   x, y: integer;
   poke: TPoke;
@@ -904,8 +912,7 @@ begin
   inc(num);
 end;
 
-function TFormMain.GetTargetPokeNumber(x, y: integer;
-  var posType: TPosType): integer;
+function TFormMain.GetTargetPokeNumber(x, y: integer; var posType: TPosType): integer;
 var
   i: integer;
 begin
@@ -954,8 +961,7 @@ begin
     end;
 end;
 
-function TFormMain.IndicatePokeCanMove(numFrom, numTo: integer;
-  typeFrom, typeTO: TPosType): boolean;
+function TFormMain.IndicatePokeCanMove(numFrom, numTo: integer; typeFrom, typeTO: TPosType): boolean;
 var
   pokeFrom, pokeTo: TPoke;
 begin
@@ -1236,8 +1242,7 @@ var
   i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 127, 0);
-  PaintBoxMain.Canvas.Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY,
-    ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
+  PaintBoxMain.Canvas.Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY, ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
   for i := 1 to 8 do
     DrawArrayNumber(i);
 end;
@@ -1247,14 +1252,12 @@ var
   i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 127, 0);
-  PaintBoxMain.Canvas.Rectangle((col - 1) * ARRAY_MULX + ARRAY_STARTX,
-    1 * ARRAY_MULY + ARRAY_STARTY, (col - 1) * ARRAY_MULX + ARRAY_STARTX + 71,
+  PaintBoxMain.Canvas.Rectangle((col - 1) * ARRAY_MULX + ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY, (col - 1) * ARRAY_MULX + ARRAY_STARTX + 71,
     52 * ARRAY_MULY + ARRAY_STARTY);
   if GRunning then
   begin
     for i := 1 to GArrayIndex[col] do
-      DrawPoke((col - 1) * ARRAY_MULX + ARRAY_STARTX,
-        i * ARRAY_MULY + ARRAY_STARTY, GArray[col][i]);
+      DrawPoke((col - 1) * ARRAY_MULX + ARRAY_STARTX, i * ARRAY_MULY + ARRAY_STARTY, GArray[col][i]);
   end;
 end;
 
@@ -1263,14 +1266,10 @@ var
   i: integer;
 begin
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 71, 0,
-    PaintBoxMain.Width, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 2 * 71, 0,
-    PaintBoxMain.Width - 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 3 * 71, 0,
-    PaintBoxMain.Width - 2 * 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 4 * 71, 0,
-    PaintBoxMain.Width - 3 * 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 71, 0, PaintBoxMain.Width, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 2 * 71, 0, PaintBoxMain.Width - 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 3 * 71, 0, PaintBoxMain.Width - 2 * 71, 96);
+  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 4 * 71, 0, PaintBoxMain.Width - 3 * 71, 96);
   PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
   PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width, 0);
   PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 4 * 71, 0);
@@ -1293,18 +1292,15 @@ procedure TFormMain.DrawContainerNumber(num: integer);
 begin
   if (GContainer[num].x <> 0) or (GContainer[num].y <> 0) then
   begin
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GContainer[num].x, GContainer[num].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GContainer[num].x, GContainer[num].y]));
     PaintBoxMain.Canvas.Draw(Self.Width - (5 - num) * 71 - 6, 0, GBitmap);
   end;
 end;
 
 procedure TFormMain.DrawPoke(x, y: integer; poke: TPoke);
 begin
-  GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-    [poke.x, poke.y]));
-  PaintBoxMain.Canvas.StretchDraw(Rect(x, y, x + POKE_WIDTH,
-    y + POKE_HEIGHT), GBitmap);
+  GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [poke.x, poke.y]));
+  PaintBoxMain.Canvas.StretchDraw(Rect(x, y, x + POKE_WIDTH, y + POKE_HEIGHT), GBitmap);
 end;
 
 procedure TFormMain.DrawTempArea();
@@ -1336,8 +1332,7 @@ procedure TFormMain.DrawTempAreaNumber(num: integer);
 begin
   if (GTemp[num].x <> 0) or (GTemp[num].y <> 0) then
   begin
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP,
-      [GTemp[num].x, GTemp[num].y]));
+    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[num].x, GTemp[num].y]));
     PaintBoxMain.Canvas.Draw((num - 1) * TEMP_MULX, 0, GBitmap);
   end
   else

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899/12/30 00:00:00.000.pas,D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\UnitMove.pas=D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\Unit1.pas</Transaction>
-    <Transaction>1899/12/30 00:00:00.000.dfm,D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\UnitMove.dfm=D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\Unit1.dfm</Transaction>
-    <Transaction>2014/11/11 14:10:41.000.163,C:\Documents and Settings\RicolWang\My Documents\RAD Studio\Projects\freecell\PokeGame_XE5.dproj=C:\Documents and Settings\RicolWang\My Documents\RAD Studio\Projects\freecell\PokeGame.dproj</Transaction>
-    <Transaction>2020/08/22 02:26:07.000.802,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMain.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\main.pas</Transaction>
-    <Transaction>2020/08/22 02:26:07.000.802,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMain.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\main.dfm</Transaction>
-    <Transaction>2020/08/22 02:26:11.000.826,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMove.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\move.pas</Transaction>
-    <Transaction>2020/08/22 02:26:11.000.826,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMove.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\move.dfm</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.dfm,D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\Unit1.dfm=D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\UnitMove.dfm</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.pas,D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\Unit1.pas=D:\文档\RAD Studio\Projects\Delphi\游戏开发\空当接龙\UnitMove.pas</Transaction>
+    <Transaction>2014/11/11 14:10:41.000.163,C:\Documents and Settings\RicolWang\My Documents\RAD Studio\Projects\freecell\PokeGame.dproj=C:\Documents and Settings\RicolWang\My Documents\RAD Studio\Projects\freecell\PokeGame_XE5.dproj</Transaction>
+    <Transaction>2020/08/22 02:26:07.000.802,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\main.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMain.dfm</Transaction>
+    <Transaction>2020/08/22 02:26:07.000.802,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\main.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMain.pas</Transaction>
+    <Transaction>2020/08/22 02:26:11.000.826,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\move.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMove.dfm</Transaction>
+    <Transaction>2020/08/22 02:26:11.000.826,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\move.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\FreeCell\UnitMove.pas</Transaction>
   </Transactions>
 </BorlandProject>
