@@ -1247,8 +1247,11 @@ procedure TFormMain.DrawArrayArea;
 var
   i: integer;
 begin
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 127, 0);
-  PaintBoxMain.Canvas.Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY, ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
+  with PaintBoxMain.Canvas do
+  begin
+    Pen.Color := RGB(0, 127, 0);
+    Rectangle(ARRAY_STARTX, 1 * ARRAY_MULY + ARRAY_STARTY, ARRAY_STARTX + Self.Width, 52 * ARRAY_MULY + ARRAY_STARTY);
+  end;
   for i := 1 to 8 do
     DrawArrayNumber(i);
 end;
@@ -1269,28 +1272,29 @@ end;
 
 procedure TFormMain.DrawContainerArea;
 var
-  i: integer;
+  i, w: integer;
 begin
   with PaintBoxMain.Canvas do
   begin
+    w := PaintBoxMain.Width;
     Pen.Color := RGB(0, 213, 0);
-    Rectangle(PaintBoxMain.Width - 71, 0, PaintBoxMain.Width, 96);
-    Rectangle(PaintBoxMain.Width - 2 * 71, 0, PaintBoxMain.Width - 71, 96);
-    Rectangle(PaintBoxMain.Width - 3 * 71, 0, PaintBoxMain.Width - 2 * 71, 96);
-    Rectangle(PaintBoxMain.Width - 4 * 71, 0, PaintBoxMain.Width - 3 * 71, 96);
+    Rectangle(w - 71, 0, w, 96);
+    Rectangle(w - 2 * 71, 0, w - 71, 96);
+    Rectangle(w - 3 * 71, 0, w - 2 * 71, 96);
+    Rectangle(w - 4 * 71, 0, w - 3 * 71, 96);
     Pen.Color := RGB(0, 0, 0);
-    MoveTo(PaintBoxMain.Width, 0);
-    LineTo(PaintBoxMain.Width - 4 * 71, 0);
-    MoveTo(PaintBoxMain.Width, 0);
-    LineTo(PaintBoxMain.Width, 96);
-    MoveTo(PaintBoxMain.Width - 71, 0);
-    LineTo(PaintBoxMain.Width - 71, 96);
-    MoveTo(PaintBoxMain.Width - 2 * 71, 0);
-    LineTo(PaintBoxMain.Width - 2 * 71, 96);
-    MoveTo(PaintBoxMain.Width - 3 * 71, 0);
-    LineTo(PaintBoxMain.Width - 3 * 71, 96);
-    MoveTo(PaintBoxMain.Width - 4 * 71, 0);
-    LineTo(PaintBoxMain.Width - 4 * 71, 96);
+    MoveTo(w, 0);
+    LineTo(w - 4 * 71, 0);
+    MoveTo(w, 0);
+    LineTo(w, 96);
+    MoveTo(w - 71, 0);
+    LineTo(w - 71, 96);
+    MoveTo(w - 2 * 71, 0);
+    LineTo(w - 2 * 71, 96);
+    MoveTo(w - 3 * 71, 0);
+    LineTo(w - 3 * 71, 96);
+    MoveTo(w - 4 * 71, 0);
+    LineTo(w - 4 * 71, 96);
   end;
   if GRunning then
     for i := 1 to 4 do
