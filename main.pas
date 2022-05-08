@@ -187,17 +187,20 @@ begin
     GBitmap.LoadFromResourceName(hInstance, RESOURCEKINGRIGHT)
   else
     GBitmap.LoadFromResourceName(hInstance, RESOURCEKINGLEFT);
-  PaintBoxMain.Canvas.StretchDraw(GRect, GBitmap);
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 255, 0);
-  PaintBoxMain.Canvas.MoveTo(GRect.Left - 1, GRect.Top - 1);
-  PaintBoxMain.Canvas.LineTo(GRect.Right + 1, GRect.Top - 1);
-  PaintBoxMain.Canvas.MoveTo(GRect.Left - 1, GRect.Top - 1);
-  PaintBoxMain.Canvas.LineTo(GRect.Left - 1, GRect.Bottom + 1);
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
-  PaintBoxMain.Canvas.MoveTo(GRect.Right + 1, GRect.Bottom + 1);
-  PaintBoxMain.Canvas.LineTo(GRect.Left - 1, GRect.Bottom + 1);
-  PaintBoxMain.Canvas.MoveTo(GRect.Right + 1, GRect.Bottom + 1);
-  PaintBoxMain.Canvas.LineTo(GRect.Right + 1, GRect.Top - 1);
+  with PaintBoxMain.Canvas do
+  begin
+    StretchDraw(GRect, GBitmap);
+    Pen.Color := RGB(0, 255, 0);
+    MoveTo(GRect.Left - 1, GRect.Top - 1);
+    LineTo(GRect.Right + 1, GRect.Top - 1);
+    MoveTo(GRect.Left - 1, GRect.Top - 1);
+    LineTo(GRect.Left - 1, GRect.Bottom + 1);
+    Pen.Color := RGB(0, 0, 0);
+    MoveTo(GRect.Right + 1, GRect.Bottom + 1);
+    LineTo(GRect.Left - 1, GRect.Bottom + 1);
+    MoveTo(GRect.Right + 1, GRect.Bottom + 1);
+    LineTo(GRect.Right + 1, GRect.Top - 1);
+  end;
 end;
 
 procedure TFormMain.MenuGameExitClick(Sender: TObject);
@@ -756,22 +759,25 @@ var
 begin
   if tmp = 0 then
     exit;
-  if GChoosedType = TYPEARRAY then
+  with PaintBoxMain.Canvas do
   begin
-    index := GArrayIndex[tmp];
-    GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GArray[tmp][index].x, GArray[tmp][index].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
-  end
-  else if GChoosedType = TYPETEMP then
-  begin
-    if GTemp[tmp].x = 0 then
-      exit;
-    GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
-    PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
-    PaintBoxMain.Canvas.Draw((tmp - 1) * TEMP_MULX, 0, GBitmap, 100);
+    if GChoosedType = TYPEARRAY then
+    begin
+      index := GArrayIndex[tmp];
+      GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
+      Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap);
+      GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GArray[tmp][index].x, GArray[tmp][index].y]));
+      Draw((tmp - 1) * ARRAY_MULX + ARRAY_STARTX, index * ARRAY_MULY + ARRAY_STARTY, GBitmap, 100);
+    end
+    else if GChoosedType = TYPETEMP then
+    begin
+      if GTemp[tmp].x = 0 then
+        exit;
+      GBitmap.LoadFromResourceName(hInstance, RESOURCEBACKGROUNDBITMAP);
+      Draw((tmp - 1) * TEMP_MULX, 0, GBitmap);
+      GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[tmp].x, GTemp[tmp].y]));
+      Draw((tmp - 1) * TEMP_MULX, 0, GBitmap, 100);
+    end;
   end;
 end;
 
@@ -1265,24 +1271,27 @@ procedure TFormMain.DrawContainerArea;
 var
   i: integer;
 begin
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 71, 0, PaintBoxMain.Width, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 2 * 71, 0, PaintBoxMain.Width - 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 3 * 71, 0, PaintBoxMain.Width - 2 * 71, 96);
-  PaintBoxMain.Canvas.Rectangle(PaintBoxMain.Width - 4 * 71, 0, PaintBoxMain.Width - 3 * 71, 96);
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 4 * 71, 0);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width, 96);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width - 71, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 71, 96);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width - 2 * 71, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 2 * 71, 96);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width - 3 * 71, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 3 * 71, 96);
-  PaintBoxMain.Canvas.MoveTo(PaintBoxMain.Width - 4 * 71, 0);
-  PaintBoxMain.Canvas.LineTo(PaintBoxMain.Width - 4 * 71, 96);
+  with PaintBoxMain.Canvas do
+  begin
+    Pen.Color := RGB(0, 213, 0);
+    Rectangle(PaintBoxMain.Width - 71, 0, PaintBoxMain.Width, 96);
+    Rectangle(PaintBoxMain.Width - 2 * 71, 0, PaintBoxMain.Width - 71, 96);
+    Rectangle(PaintBoxMain.Width - 3 * 71, 0, PaintBoxMain.Width - 2 * 71, 96);
+    Rectangle(PaintBoxMain.Width - 4 * 71, 0, PaintBoxMain.Width - 3 * 71, 96);
+    Pen.Color := RGB(0, 0, 0);
+    MoveTo(PaintBoxMain.Width, 0);
+    LineTo(PaintBoxMain.Width - 4 * 71, 0);
+    MoveTo(PaintBoxMain.Width, 0);
+    LineTo(PaintBoxMain.Width, 96);
+    MoveTo(PaintBoxMain.Width - 71, 0);
+    LineTo(PaintBoxMain.Width - 71, 96);
+    MoveTo(PaintBoxMain.Width - 2 * 71, 0);
+    LineTo(PaintBoxMain.Width - 2 * 71, 96);
+    MoveTo(PaintBoxMain.Width - 3 * 71, 0);
+    LineTo(PaintBoxMain.Width - 3 * 71, 96);
+    MoveTo(PaintBoxMain.Width - 4 * 71, 0);
+    LineTo(PaintBoxMain.Width - 4 * 71, 96);
+  end;
   if GRunning then
     for i := 1 to 4 do
       DrawContainerNumber(i);
@@ -1307,22 +1316,25 @@ procedure TFormMain.DrawTempArea();
 var
   i: integer;
 begin
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-  PaintBoxMain.Canvas.Rectangle(0, 0, 71, 96);
-  PaintBoxMain.Canvas.Rectangle(71, 0, 142, 96);
-  PaintBoxMain.Canvas.Rectangle(142, 0, 213, 96);
-  PaintBoxMain.Canvas.Rectangle(213, 0, 284, 96);
-  PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
-  PaintBoxMain.Canvas.MoveTo(0, 0);
-  PaintBoxMain.Canvas.LineTo(0, 96);
-  PaintBoxMain.Canvas.MoveTo(0, 0);
-  PaintBoxMain.Canvas.LineTo(284, 0);
-  PaintBoxMain.Canvas.MoveTo(71, 0);
-  PaintBoxMain.Canvas.LineTo(71, 96);
-  PaintBoxMain.Canvas.MoveTo(142, 0);
-  PaintBoxMain.Canvas.LineTo(142, 96);
-  PaintBoxMain.Canvas.MoveTo(213, 0);
-  PaintBoxMain.Canvas.LineTo(213, 96);
+  with PaintBoxMain.Canvas do
+  begin
+    Pen.Color := RGB(0, 213, 0);
+    Rectangle(0, 0, 71, 96);
+    Rectangle(71, 0, 142, 96);
+    Rectangle(142, 0, 213, 96);
+    Rectangle(213, 0, 284, 96);
+    Pen.Color := RGB(0, 0, 0);
+    MoveTo(0, 0);
+    LineTo(0, 96);
+    MoveTo(0, 0);
+    LineTo(284, 0);
+    MoveTo(71, 0);
+    LineTo(71, 96);
+    MoveTo(142, 0);
+    LineTo(142, 96);
+    MoveTo(213, 0);
+    LineTo(213, 96);
+  end;
   if GRunning then
     for i := 1 to 4 do
       DrawTempAreaNumber(i);
@@ -1330,45 +1342,48 @@ end;
 
 procedure TFormMain.DrawTempAreaNumber(num: integer);
 begin
-  if (GTemp[num].x <> 0) or (GTemp[num].y <> 0) then
+  with PaintBoxMain.Canvas do
   begin
-    GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[num].x, GTemp[num].y]));
-    PaintBoxMain.Canvas.Draw((num - 1) * TEMP_MULX, 0, GBitmap);
-  end
-  else
-  begin
-    PaintBoxMain.Canvas.Pen.Color := RGB(0, 213, 0);
-    case num of
-      1:
-        begin
-          PaintBoxMain.Canvas.Rectangle(0, 0, 71, 96);
-        end;
-      2:
-        begin
-          PaintBoxMain.Canvas.Rectangle(71, 0, 142, 96);
-        end;
-      3:
-        begin
-          PaintBoxMain.Canvas.Rectangle(142, 0, 213, 96);
-        end;
-      4:
-        begin
-          PaintBoxMain.Canvas.Rectangle(213, 0, 284, 96);
-        end
+    if (GTemp[num].x <> 0) or (GTemp[num].y <> 0) then
+    begin
+      GBitmap.LoadFromResourceName(hInstance, format(RESOURCEBITMAP, [GTemp[num].x, GTemp[num].y]));
+      Draw((num - 1) * TEMP_MULX, 0, GBitmap);
+    end
     else
-      ;
+    begin
+      Pen.Color := RGB(0, 213, 0);
+      case num of
+        1:
+          begin
+            Rectangle(0, 0, 71, 96);
+          end;
+        2:
+          begin
+            Rectangle(71, 0, 142, 96);
+          end;
+        3:
+          begin
+            Rectangle(142, 0, 213, 96);
+          end;
+        4:
+          begin
+            Rectangle(213, 0, 284, 96);
+          end
+      else
+        ;
+      end;
+      Pen.Color := RGB(0, 0, 0);
+      MoveTo(0, 0);
+      LineTo(0, 96);
+      MoveTo(0, 0);
+      LineTo(284, 0);
+      MoveTo(71, 0);
+      LineTo(71, 96);
+      MoveTo(142, 0);
+      LineTo(142, 96);
+      MoveTo(213, 0);
+      LineTo(213, 96);
     end;
-    PaintBoxMain.Canvas.Pen.Color := RGB(0, 0, 0);
-    PaintBoxMain.Canvas.MoveTo(0, 0);
-    PaintBoxMain.Canvas.LineTo(0, 96);
-    PaintBoxMain.Canvas.MoveTo(0, 0);
-    PaintBoxMain.Canvas.LineTo(284, 0);
-    PaintBoxMain.Canvas.MoveTo(71, 0);
-    PaintBoxMain.Canvas.LineTo(71, 96);
-    PaintBoxMain.Canvas.MoveTo(142, 0);
-    PaintBoxMain.Canvas.LineTo(142, 96);
-    PaintBoxMain.Canvas.MoveTo(213, 0);
-    PaintBoxMain.Canvas.LineTo(213, 96);
   end;
 end;
 
