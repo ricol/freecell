@@ -751,6 +751,7 @@ begin
       end;
     end;
   end;
+  CheckAllPokeCanDelete
 end;
 
 procedure TFormMain.SetChoosed(tmp: integer);
@@ -1207,11 +1208,9 @@ end;
 procedure TFormMain.CheckAllPokeCanDelete;
 var
   i: integer;
-  Need: boolean;
 begin
   PaintBoxMain.Cursor := crHourGlass;
   Application.ProcessMessages;
-  Need := False;
   for i := 1 to 4 do
     if GTemp[i].x <> 0 then
     begin
@@ -1225,11 +1224,9 @@ begin
       PlaySound(PChar('WaveRecycle'), hInstance, SND_ASYNC or SND_RESOURCE);
       // Sleep(100);
       AutoMovePokeFromArrayToContainer(i);
-      Need := true;
+      CheckAllPokeCanDelete();
     end;
   end;
-  if Need then
-    CheckAllPokeCanDelete();
   PaintBoxMain.Cursor := crDefault;
 end;
 
