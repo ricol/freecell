@@ -1209,8 +1209,6 @@ procedure TFormMain.CheckAllPokeCanDelete;
 var
   i: integer;
 begin
-  PaintBoxMain.Cursor := crHourGlass;
-  Application.ProcessMessages;
   for i := 1 to 4 do
     if GTemp[i].x <> 0 then
     begin
@@ -1227,7 +1225,6 @@ begin
       CheckAllPokeCanDelete();
     end;
   end;
-  PaintBoxMain.Cursor := crDefault;
 end;
 
 procedure TFormMain.CheckGame(tmp: integer);
